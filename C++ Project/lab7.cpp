@@ -87,7 +87,32 @@ int* mas_max(int(*a)[N], int* x, void (*pfunc)(int[N][N]))
 	return x;
 }
 
-int main() {
+void multiply_recurs(int x[N], int i, int& s) 
+{
+	if (i < N)  
+		if (x[i] < 0)
+		{
+			s = s * x[i];   
+			return multiply_recurs(x, i + 1, s); 
+		}
+		else 
+			return multiply_recurs(x, i + 1, s);
+}
+
+int multiply(int x[N])
+{
+	int s, i; 
+	s = 1; 
+	i = 0;
+	while ((i < N) && (x[i]<0))  
+		i++;
+	i++; 
+	multiply_recurs(x, i, s); 
+	return s;
+}
+
+int main() 
+{
 	setlocale(LC_CTYPE, "");
 	int a[N][N], x[N], c;
 	void (*pfunc)(int[N][N]);
@@ -103,5 +128,6 @@ int main() {
 	case 2: pfunc = &input_matr_file;
 	}
 	output(mas_max(a, x, pfunc), a);
+	printf("Y = %d", multiply(x));
 	_getch();
 }
